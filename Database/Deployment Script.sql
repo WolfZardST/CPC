@@ -4,7 +4,7 @@ DROP DATABASE IF EXISTS `cpc`;
 CREATE DATABASE `cpc` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `cpc`;
 -- -----------------------------------------------
-CREATE TABLE `evento` (
+CREATE TABLE `events` (
   `id` int UNSIGNED AUTO_INCREMENT NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `descripcion` text NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE `evento` (
   PRIMARY KEY(id)
 );
 
-CREATE TABLE `grupo` (
+CREATE TABLE `groups` (
   `id` int UNSIGNED AUTO_INCREMENT NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `materia` tinyint NOT NULL DEFAULT 0,
@@ -22,25 +22,25 @@ CREATE TABLE `grupo` (
   PRIMARY KEY(id)
 );
 
-CREATE TABLE `publicacion` (
+CREATE TABLE `posts` (
   `id` int UNSIGNED AUTO_INCREMENT NOT NULL,
-  `id_grupo` int UNSIGNED NOT NULL,
+  `group_id` int UNSIGNED NOT NULL,
   `titulo` varchar(100) NOT NULL,
   `contenido` text NOT NULL,
   `votos_up` int UNSIGNED DEFAULT 0,
   `votos_down` int UNSIGNED DEFAULT 0,
   PRIMARY KEY(id),
-  FOREIGN KEY(id_grupo)
-	REFERENCES grupo(id)
+  FOREIGN KEY(group_id)
+	REFERENCES `groups`(id)
     ON UPDATE CASCADE
 );
 
-CREATE TABLE `comentario` (
+CREATE TABLE `comments` (
   `id` int UNSIGNED AUTO_INCREMENT NOT NULL,
-  `id_publicacion` int UNSIGNED NOT NULL,
+  `post_id` int UNSIGNED NOT NULL,
   `contenido` text NOT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY(id_publicacion)
-	REFERENCES publicacion(id)
+  FOREIGN KEY(post_id)
+	REFERENCES posts(id)
     ON UPDATE CASCADE
 );
