@@ -21,7 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SideBar/>
-        {children}</body>
+        {children}
+</body>
     </html>
   );
 }

@@ -26,12 +26,33 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-a{
+a {
   color: black;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@layer components {
+  .sidebar__li {
+    @apply flex w-full items-center justify-start gap-10 mb-[30px] p-2 rounded-md hover:bg-secondary;
+
+    a {
+      @apply flex w-full items-center justify-start gap-4;
+
+      .icon {
+        @apply w-8 h-8 text-black;
+      }
+    }
+
+    &:hover {
+      a,
+      .icon {
+        @apply text-white;
+      }
+    }
   }
 }
