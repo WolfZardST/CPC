@@ -38,13 +38,13 @@ a {
 
 @layer components {
   .sidebar__li {
-    @apply flex w-full items-center justify-start gap-10 mb-[30px] p-2 rounded-md hover:bg-secondary;
+    @apply flex w-full items-center justify-start gap-10 mb-[15px] p-2 rounded-md hover:bg-secondary;
 
     a {
       @apply flex w-full items-center justify-start gap-4;
 
       .icon {
-        @apply w-8 h-8 text-black;
+        @apply w-5 h-5;
       }
     }
 

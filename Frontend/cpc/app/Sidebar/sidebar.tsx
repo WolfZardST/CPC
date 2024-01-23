@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faComment,
@@ -12,8 +12,21 @@ import {
 import logo from "../../public/logo.png";
 import Image from "next/image";
 import "flowbite";
+import { usePathname } from "next/navigation";
 
 export default function SideBar() {
+
+  const pathname = usePathname();
+  const [isPostsSelected, setIsPostsSelected] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (pathname === '/posts') {
+      setIsPostsSelected(true);
+    } else {
+      setIsPostsSelected(false);
+    }
+  }, [pathname]);
+
   return (
     <nav className="fixed top-0 left-0 h-screen bg-primary w-64 overflow-y-auto">
       <div className="p-4 flex items-center gap-3">
@@ -25,16 +38,17 @@ export default function SideBar() {
         />
         <p className="text-black text-xl font-bold">CPC</p>
       </div>
-      <ul className="p-4">
-        <li className="sidebar__li">
-          <a href="#">
-            <FontAwesomeIcon icon={faComment} className="icon" />
+      <ul className="p-2">
+        <li className={`sidebar__li ${isPostsSelected ? "bg-secondary": ""}`}>
+          <a href="posts" className={`${isPostsSelected ? "text-white": ""}`}>
+            <FontAwesomeIcon icon={faComment} 
+              className={`icon ${isPostsSelected ? "text-white": "text-black"}`} />
             Publicaciones{" "}
           </a>
         </li>
-        <li className="mb-[30px]">
+        <li className="mb-[15px]">
           <button
-            className="flex items-center justify-start w-full h-full hover:bg-secondary p-2 rounded-md group"
+            className={`flex items-center justify-start w-full h-full hover:bg-secondary p-2 rounded-md group`}
             type="button"
             aria-controls="groupsMenu"
             data-collapse-toggle="groupsMenu"
@@ -45,7 +59,7 @@ export default function SideBar() {
             >
               <FontAwesomeIcon
                 icon={faUserGroup}
-                className="text-black w-8 h-8 group-hover:text-white"
+                className="icon"
               />{" "}
               Grupos
             </a>
