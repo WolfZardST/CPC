@@ -9,7 +9,6 @@ import {
   faRightFromBracket,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
-import "./sidebar.scss";
 import logo from "../../public/logo.png";
 import Image from "next/image";
 import "flowbite";

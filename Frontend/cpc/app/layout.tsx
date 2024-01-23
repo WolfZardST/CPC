@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <SideBar/>
         {children}
-</body>
+      </body>
     </html>
   );
 }
