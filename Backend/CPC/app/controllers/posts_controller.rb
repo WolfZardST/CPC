@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
+    @posts = Post.all.order('id DESC').limit(1).offset(params[:page]*1)
 
     render json: @posts
   end
