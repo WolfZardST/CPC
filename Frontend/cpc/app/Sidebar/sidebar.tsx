@@ -20,7 +20,7 @@ export default function SideBar() {
   const [isPostsSelected, setIsPostsSelected] = useState<boolean>(false);
 
   useEffect(() => {
-    if (pathname === '/posts') {
+    if (pathname.includes('/posts')) {
       setIsPostsSelected(true);
     } else {
       setIsPostsSelected(false);
@@ -40,7 +40,7 @@ export default function SideBar() {
       </div>
       <ul className="p-2">
         <li className={`sidebar__li ${isPostsSelected ? "bg-secondary": ""}`}>
-          <a href="posts" className={`${isPostsSelected ? "text-white": ""}`}>
+          <a href="/posts" className={`${isPostsSelected ? "text-white": ""}`}>
             <FontAwesomeIcon icon={faComment} 
               className={`icon ${isPostsSelected ? "text-white": "text-black"}`} />
             Publicaciones{" "}

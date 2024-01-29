@@ -1,0 +1,5 @@
+.ql-snow .ql-editor pre.ql-syntax {
+    background-color: #ffffff !important;
+    color: black;
+    border: 1px solid lightgray !important;
+}
