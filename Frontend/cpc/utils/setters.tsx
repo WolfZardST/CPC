@@ -12,6 +12,14 @@ export async function createPost(content: string, formData: FormData) {
     redirect('/posts');
 }
 
+export async function createComment(content: string, postId: number) {
+    const body = {
+        "contenido": content,
+        "post_id": postId,
+    };
+    await createEntity(body, "comments");
+}
+
 async function createEntity(body: any, subUrl: string) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/${subUrl}`, {
         method: 'POST',

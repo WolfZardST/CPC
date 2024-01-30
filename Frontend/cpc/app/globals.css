@@ -55,4 +55,13 @@ a {
       }
     }
   }
+
+  h2 {
+    @apply mb-1;
+    font-size: 1.25rem;
+  }
+
+  blockquote {
+    @apply pl-4 mt-2 mb-2 border-l-4 border-gray-400;
+  }
 }

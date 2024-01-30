@@ -5,24 +5,11 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Label, Select, TextInput } from "flowbite-react";
 import { useState } from "react";
-import hljs from 'highlight.js';
-import 'react-quill/dist/quill.snow.css';
-import './quill.css';
-import dynamic from "next/dynamic";
 import { getGroups } from "@/utils/getters";
 import useSWR from "swr";
 import { createPost } from "@/utils/setters";
 import { useFormStatus } from "react-dom";
-
-const ReactQuill = dynamic(
-    () => {
-        //@ts-ignore
-        window.hljs = hljs;
-       return import ("react-quill")
-    }, {
-    ssr: false,
-    loading: () => <p>Cargando editor...</p>
-});
+import QuillEditor from "../quill-editor/quill-editor";
 
 export default function NewPost() {
 
@@ -31,24 +18,6 @@ export default function NewPost() {
 
     const bindedCreatePost = createPost.bind(null, content);
     const { pending } = useFormStatus();
-
-    const modules = {
-        syntax: true,
-        toolbar: [
-            [{ 'header': [2, 3, false] }],
-            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            ['link', 'code-block'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-            ['clean']
-        ],
-    };
-
-    const formats = [
-        'header',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'link', 'code-block',
-        'list', 'bullet', 'indent',
-    ];
 
     return (
         <div className="text-black m-5 border-solid border-2 border-gray-300 p-8 bg-white">
@@ -82,13 +51,7 @@ export default function NewPost() {
                     <div className="mb-2 block">
                         <Label className="text-lg" value="Contenido" />
                     </div>
-                    <ReactQuill
-                        modules={modules}
-                        formats={formats}
-                        theme="snow"
-                        value={content}
-                        onChange={setContent} 
-                    />
+                    <QuillEditor content={content} setContent={setContent} />
                 </div>
                 <Button pill
                     isProcessing={pending}
