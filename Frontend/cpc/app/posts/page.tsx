@@ -12,7 +12,7 @@ import './pre.css';
 import { TfiComments } from "react-icons/tfi";
 import QuillEditor from "./quill-editor/quill-editor";
 import { create } from "domain";
-import { createComment } from "@/utils/setters";
+import { createComment, downVote, upVote } from "@/utils/setters";
 
 export default function Posts() {
 
@@ -37,13 +37,31 @@ export default function Posts() {
     });
 
     const [editorIndex, setEditorIndex] = useState<number | null>(null);
+    const [sendingComment, setSendingComment] = useState(false);
 
     function newComment(postId: number) {
-        createComment(commentContent, postId);
-        setEditorIndex(null);
-        setCommentContent('');
-        mutate(data, false);
-        mutate();
+        setSendingComment(true);
+        createComment(commentContent, postId).then(() => {
+            setEditorIndex(null);
+            setCommentContent('');
+            mutate(data, false);
+            mutate();
+            setSendingComment(false);
+        });
+    }
+
+    function performUpVote(postId: number) {
+        upVote(postId).then(() => {
+            mutate(data, false);
+            mutate();
+        });
+    }
+
+    function performDownVote(postId: number) {
+        downVote(postId).then(() => {
+            mutate(data, false);
+            mutate();
+        });
     }
 
     return (
@@ -73,10 +91,12 @@ export default function Posts() {
                                     <div className="post-content" dangerouslySetInnerHTML={{ __html: post.contenido }} />
                                     <div className="flex flex-row gap-4 mt-2">
                                         <Button.Group pill>
-                                            <Button size="sm" color="gray">
+                                            <Button size="sm" color="gray"
+                                                onClick={() => performUpVote(post.id)}>
                                                 Útil: {post.votos_up}
                                             </Button>
-                                            <Button size="sm" color="gray">
+                                            <Button size="sm" color="gray"
+                                                 onClick={() => performDownVote(post.id)}>
                                                 Poco útil: {post.votos_down}
                                             </Button>
                                         </Button.Group>
@@ -96,9 +116,11 @@ export default function Posts() {
                                             <QuillEditor content={commentContent} setContent={setCommentContent} />
                                         </div>
                                         <Button pill className="w-auto self-end"
+                                            isProcessing={sendingComment}
+                                            disabled={sendingComment}
                                             onClick={() => newComment(post.id)}
                                             color="blue">
-                                            Comentar
+                                            {sendingComment ? "Enviando" : "Comentar"}
                                         </Button>
                                     </>
                                 }
@@ -109,7 +131,7 @@ export default function Posts() {
                                             <p className="text-sm font-bold">Anónimo</p>
                                         </div>
                                         <div className="rounded-lg p-6 bg-gray-200 flex flex-col gap-3 w-full">
-                                            <div dangerouslySetInnerHTML={{ __html: comment.contenido }} />
+                                            <div className="post-content" dangerouslySetInnerHTML={{ __html: comment.contenido }} />
                                         </div>
                                     </div>
                                 ))}

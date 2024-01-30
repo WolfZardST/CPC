@@ -44,3 +44,5 @@ CREATE TABLE `comments` (
 	REFERENCES posts(id)
     ON UPDATE CASCADE
 );
+
+INSERT INTO `groups`(nombre) VALUES ("Lenguajes de Programación");

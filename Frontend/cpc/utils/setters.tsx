@@ -12,6 +12,14 @@ export async function createPost(content: string, formData: FormData) {
     redirect('/posts');
 }
 
+export async function upVote(postId: number) {
+    await patchEntity({}, `posts/${postId}/upvote`);
+}
+
+export async function downVote(postId: number) {
+    await patchEntity({}, `posts/${postId}/downvote`);
+}
+
 export async function createComment(content: string, postId: number) {
     const body = {
         "contenido": content,
@@ -29,4 +37,14 @@ async function createEntity(body: any, subUrl: string) {
         }
     });
     return res.json();
+}
+
+async function patchEntity(body: any, subUrl: string) {
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/${subUrl}`, {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 }

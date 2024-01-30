@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,11 +14,15 @@ import logo from "../../public/logo.png";
 import Image from "next/image";
 import "flowbite";
 import { usePathname } from "next/navigation";
+import { getGroups } from "@/utils/getters";
+import useSWR from "swr";
 
 export default function SideBar() {
 
   const pathname = usePathname();
   const [isPostsSelected, setIsPostsSelected] = useState<boolean>(false);
+
+  const { data } = useSWR("placeholder", getGroups);
 
   useEffect(() => {
     if (pathname.includes('/posts')) {
@@ -39,10 +44,10 @@ export default function SideBar() {
         <p className="text-black text-xl font-bold">CPC</p>
       </div>
       <ul className="p-2">
-        <li className={`sidebar__li ${isPostsSelected ? "bg-secondary": ""}`}>
-          <a href="/posts" className={`${isPostsSelected ? "text-white": ""}`}>
-            <FontAwesomeIcon icon={faComment} 
-              className={`icon ${isPostsSelected ? "text-white": "text-black"}`} />
+        <li className={`sidebar__li ${isPostsSelected ? "bg-secondary" : ""}`}>
+          <a href="/posts" className={`${isPostsSelected ? "text-white" : ""}`}>
+            <FontAwesomeIcon icon={faComment}
+              className={`icon ${isPostsSelected ? "text-white" : "text-black"}`} />
             Publicaciones{" "}
           </a>
         </li>
@@ -69,30 +74,16 @@ export default function SideBar() {
             />
           </button>
           <ul id="groupsMenu" className="hidden py-2 space-y-2">
-            <li>
-              <a
-                href="#"
-                className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-              >
-                Products
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-              >
-                Billing
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-              >
-                Invoice
-              </a>
-            </li>
+            {data && data.map((group: any) => (
+              <li key={group.id}>
+                <a
+                  href="#"
+                  className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                >
+                  <p className="truncate">{group.nombre}</p>
+                </a>
+              </li>
+            ))}
           </ul>
         </li>
         <li className="sidebar__li">

@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: %i[ show update destroy ]
+  before_action :set_post, only: %i[ show update destroy upvote downvote ]
 
   # GET /posts
   def index
@@ -31,6 +31,18 @@ class PostsController < ApplicationController
     else
       render json: @post.errors, status: :unprocessable_entity
     end
+  end
+
+  # PATCH /posts/1/upvote
+  def upvote
+    @post.update(votos_up: @post.votos_up + 1)
+    render json: @post
+  end
+
+  # PATCH /posts/1/downvote
+  def downvote
+    @post.update(votos_down: @post.votos_down + 1)
+    render json: @post
   end
 
   # DELETE /posts/1
