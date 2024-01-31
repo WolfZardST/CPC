@@ -2,6 +2,15 @@
 
 import { redirect } from "next/navigation";
 
+export async function createGroup(nombre: string, materia: number, imagen?: string) {
+    const body = {
+        nombre,
+        materia,
+        imagen
+    };
+    await createEntity(body, "groups");
+}
+
 export async function createPost(content: string, formData: FormData) {
     const body = {
         "contenido": content,
