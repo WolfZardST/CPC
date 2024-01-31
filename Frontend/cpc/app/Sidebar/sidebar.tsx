@@ -21,20 +21,21 @@ export default function SideBar() {
 
   const pathname = usePathname();
   const [isPostsSelected, setIsPostsSelected] = useState<boolean>(false);
+  const [isEventsSelected, setIsEventsSelected] = useState<boolean>(false);
 
   const { data } = useSWR("placeholder", getGroups);
 
   useEffect(() => {
-    if (pathname.includes('/posts')) {
-      setIsPostsSelected(true);
-    } else {
-      setIsPostsSelected(false);
-    }
+
+    setIsPostsSelected(pathname.includes('/posts'));
+    setIsEventsSelected(pathname.includes('/events'));
+
   }, [pathname]);
 
   return (
     <nav className="fixed top-0 left-0 h-screen bg-primary w-64 overflow-y-auto">
-      <div className="p-4 flex items-center gap-3">
+      <a className="p-4 flex items-center gap-3"
+        href="/">
         <Image
           src={logo}
           alt="Your Alt Text"
@@ -42,13 +43,13 @@ export default function SideBar() {
           className="rounded-full"
         />
         <p className="text-black text-xl font-bold">CPC</p>
-      </div>
+      </a>
       <ul className="p-2">
         <li className={`sidebar__li ${isPostsSelected ? "bg-secondary" : ""}`}>
           <a href="/posts" className={`${isPostsSelected ? "text-white" : ""}`}>
             <FontAwesomeIcon icon={faComment}
               className={`icon ${isPostsSelected ? "text-white" : "text-black"}`} />
-            Publicaciones{" "}
+            Publicaciones
           </a>
         </li>
         <li className="mb-[15px]">
@@ -86,9 +87,11 @@ export default function SideBar() {
             ))}
           </ul>
         </li>
-        <li className="sidebar__li">
-          <a href="#">
-            <FontAwesomeIcon icon={faCalendarDays} className="icon" /> Eventos
+        <li className={`sidebar__li ${isEventsSelected ? "bg-secondary" : ""}`}>
+          <a href="/events" className={`${isEventsSelected ? "text-white" : ""}`}>
+            <FontAwesomeIcon icon={faCalendarDays}
+              className={`icon ${isEventsSelected ? "text-white" : "text-black"}`} />
+            Eventos
           </a>
         </li>
         <li className="sidebar__li">

@@ -18,7 +18,7 @@ export default function Posts() {
                     Nueva Publicación
                 </Button>
             </div>
-            <PostsCollection fetcher={getPostsById} />
+            <PostsCollection postsFetcher={getPostsById} />
         </div>
     );
 }

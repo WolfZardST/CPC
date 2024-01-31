@@ -12,12 +12,27 @@ export async function createPost(content: string, formData: FormData) {
     redirect('/posts');
 }
 
+export async function createEvent(content: string, formData: FormData) {
+    const body = {
+        "descripcion": content,
+        "nombre": formData.get('nombre'),
+        "lugar": formData.get('lugar'),
+        "presencial": parseInt(formData.get('modalidad') as string),
+    };
+    await createEntity(body, "events");
+    redirect('/events');
+}
+
 export async function upVote(postId: number) {
     await patchEntity({}, `posts/${postId}/upvote`);
 }
 
 export async function downVote(postId: number) {
     await patchEntity({}, `posts/${postId}/downvote`);
+}
+
+export async function assist(eventId: number) {
+    await patchEntity({}, `events/${eventId}/assist`);
 }
 
 export async function createComment(content: string, postId: number) {

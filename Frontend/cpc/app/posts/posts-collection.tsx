@@ -9,23 +9,23 @@ import { useEffect, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import './pre.css';
 import { TfiComments } from "react-icons/tfi";
-import QuillEditor from "./quill-editor/quill-editor";
 import { createComment, downVote, upVote } from "@/utils/setters";
+import QuillEditor from "../quill-editor/quill-editor";
 
 interface PostsCollectionProps {
-    fetcher: ((args: any) => any)
+    postsFetcher: ((args: any) => any)
 }
 
-export default function PostsCollection({fetcher}: PostsCollectionProps) {
+export default function PostsCollection({postsFetcher}: PostsCollectionProps) {
 
-    const getKey = (pageIndex: any, previousPageData: any) => {
+    const getPostsKey = (pageIndex: any, previousPageData: any) => {
         if (pageIndex && !previousPageData.length) {
             return null;
         }
-        return pageIndex.toString();
+        return [`posts-${pageIndex}`, pageIndex.toString()];
     };
 
-    const { data, size, setSize, mutate } = useSWRInfinite(getKey, fetcher);
+    const { data: postsData, size: postsSize, setSize: postsSetSize, mutate: postsMutate } = useSWRInfinite(getPostsKey, postsFetcher);
     const [commentContent, setCommentContent] = useState('')
 
     useEffect(() => {
@@ -46,30 +46,30 @@ export default function PostsCollection({fetcher}: PostsCollectionProps) {
         createComment(commentContent, postId).then(() => {
             setEditorIndex(null);
             setCommentContent('');
-            mutate(data, false);
-            mutate();
+            postsMutate(postsData, false);
+            postsMutate();
             setSendingComment(false);
         });
     }
 
     function performUpVote(postId: number) {
         upVote(postId).then(() => {
-            mutate(data, false);
-            mutate();
+            postsMutate(postsData, false);
+            postsMutate();
         });
     }
 
     function performDownVote(postId: number) {
         downVote(postId).then(() => {
-            mutate(data, false);
-            mutate();
+            postsMutate(postsData, false);
+            postsMutate();
         });
     }
 
     return (
         <>
             <div className="flex flex-col gap-y-4 mt-6">
-                {data && data.map((posts, index) => {
+                {postsData && postsData.map((posts, index) => {
                     return posts.map((post: any) => (
                         <div
                             className="flex gap-4 mb-4"
@@ -106,7 +106,7 @@ export default function PostsCollection({fetcher}: PostsCollectionProps) {
                                                 <FontAwesomeIcon icon={faUserCircle} className="w-12 h-12" />
                                                 <p className="text-sm font-bold">Anónimo</p>
                                             </div>
-                                            <QuillEditor content={commentContent} setContent={setCommentContent} />
+                                            <QuillEditor allowCodeBlock content={commentContent} setContent={setCommentContent} />
                                         </div>
                                         <Button pill className="w-auto self-end"
                                             isProcessing={sendingComment}
@@ -133,11 +133,11 @@ export default function PostsCollection({fetcher}: PostsCollectionProps) {
                     ))
                 })}
             </div>
-            {!(data && data[size - 1] && data[size - 1].length === 0) &&
+            {!(postsData && postsData[postsSize - 1] && postsData[postsSize - 1].length === 0) &&
                 <div className="flex flex-row justify-center w-full mt-4">
                     <Button pill
                         color="blue"
-                        onClick={() => setSize(size + 1)}>
+                        onClick={() => postsSetSize(postsSize + 1)}>
                         Cargar más publicaciones
                     </Button>
                 </div>

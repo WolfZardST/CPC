@@ -15,6 +15,7 @@ const ReactQuill = dynamic(
 
 interface QuillEditorProps {
     content: string;
+    allowCodeBlock: boolean;
     setContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -25,7 +26,7 @@ export default function QuillEditor(props: QuillEditorProps) {
         toolbar: [
             [{ 'header': [2, 3, false] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            ['link', 'code-block'],
+            props.allowCodeBlock ? ['link', 'code-block'] : ['link'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
             ['clean']
         ],

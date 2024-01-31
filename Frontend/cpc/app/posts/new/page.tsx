@@ -9,7 +9,7 @@ import { getGroups } from "@/utils/getters";
 import useSWR from "swr";
 import { createPost } from "@/utils/setters";
 import { useFormStatus } from "react-dom";
-import QuillEditor from "../quill-editor/quill-editor";
+import QuillEditor from "@/app/quill-editor/quill-editor";
 
 export default function NewPost() {
 
@@ -20,7 +20,7 @@ export default function NewPost() {
     const { pending } = useFormStatus();
 
     return (
-        <div className="text-black m-5 border-solid border-2 border-gray-300 p-8 bg-white">
+        <div className="text-black m-5 border-solid border-2 border-gray-300 p-8 bg-white rounded-3xl">
             <div className="border-b-2 border-gray-300 border-solid pb-4 flex flex-row gap-4 items-center">
                 <Button pill
                     as="a"
@@ -51,7 +51,7 @@ export default function NewPost() {
                     <div className="mb-2 block">
                         <Label className="text-lg" value="Contenido" />
                     </div>
-                    <QuillEditor content={content} setContent={setContent} />
+                    <QuillEditor allowCodeBlock content={content} setContent={setContent} />
                 </div>
                 <Button pill
                     isProcessing={pending}
