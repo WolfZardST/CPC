@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.includes(:comments).all.order('id DESC').limit(1).offset(params[:page]*1)
+    @posts = Post.includes(:comments).all.order("#{params[:sort]} DESC").limit(1).offset(params[:page]*1)
 
     render json: @posts,  include: 'comments'
   end
