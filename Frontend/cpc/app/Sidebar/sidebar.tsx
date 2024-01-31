@@ -16,6 +16,8 @@ import "flowbite";
 import { usePathname } from "next/navigation";
 import { getGroups } from "@/utils/getters";
 import useSWR from "swr";
+import { Button } from "flowbite-react";
+import GroupCreationModal from "../groups/groupCreationModal/grourpCreationModal";
 
 export default function SideBar() {
 
@@ -85,6 +87,9 @@ export default function SideBar() {
                 </a>
               </li>
             ))}
+            <li>
+              <GroupCreationModal/>
+            </li>
           </ul>
         </li>
         <li className={`sidebar__li ${isEventsSelected ? "bg-secondary" : ""}`}>
